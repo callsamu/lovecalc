@@ -21,7 +21,7 @@ type application struct {
 
 func main() {
 	addr := flag.Int("addr", 4000, "Port address to listen on")
-	algorithm := flag.String("algorithm", core.HashWithFNV, "Algorithm to be used by the calculator")
+	algorithm := flag.String("algorithm", core.HashWithSHA1, "Algorithm to be used by the calculator")
 	flag.Parse()
 
 	c, err := core.NewCalculator(*algorithm)
