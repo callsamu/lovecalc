@@ -2,12 +2,11 @@ package core
 
 import (
 	"encoding/binary"
-	"fmt"
 	"hash"
 	"math"
 )
 
-const maxValue = math.MaxUint64
+const maxValue = math.MaxUint32
 
 type HashCalculator struct {
 	Hash hash.Hash
@@ -24,19 +23,19 @@ func distance(p, q float64) float64 {
 	return math.Min(d1, d2)
 }
 
-func (c *HashCalculator) hashString(s string) uint64 {
-	digest := c.Hash.Sum([]byte(s))
-	return binary.BigEndian.Uint64(digest[c.Hash.Size()-8:]) // Take last 8 bytes of hash
+func (c *HashCalculator) hash(b []byte) uint32 {
+	digest := c.Hash.Sum(b)
+	return binary.LittleEndian.Uint32(digest)
 }
 
 // Compute output value for two names
 func (c *HashCalculator) Compute(first, second string) float64 {
-	hash1 := c.hashString(first)
-	hash2 := c.hashString(second)
+	hash1 := c.hash([]byte(first))
+	hash2 := c.hash([]byte(second))
 
-	fmt.Printf("%d for %s and %d for %s\n", hash1, first, hash2, second)
+	bytes := []byte{0x0, 0x0, 0x0, 0x0}
+	binary.LittleEndian.PutUint32(bytes, hash1+hash2)
+	hash3 := c.hash(bytes)
 
-	distance := distance(float64(hash1), float64(hash2))
-
-	return 1 - distance*2/maxValue
+	return float64(hash3) / maxValue
 }
