@@ -1,0 +1,91 @@
+:root {
+    font-size: 16px;
+}
+
+main {
+    padding: 8rem;
+}
+
+header {
+    padding: 0.25rem;
+    border-bottom: 1px solid #EEE;
+    box-shadow: 1px black;
+}
+
+.centralized-container {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.title-skin {
+    font-family: "Righteous";
+    box-shadow: 1px solid black;
+    color: #777;
+}
+
+.bg-skin {
+    background-color: #FEFEFE;
+}
+
+.stacked {
+    display: flex;
+    flex-direction: column;
+}
+    
+.text-input {
+    padding: 0.5rem;
+    margin: 0.25rem auto;
+}
+
+.text-input-skin {
+    border-radius: 10px;
+    border: 1px solid #aaa;
+    color: #444;
+}
+
+
+.button {
+    width: 12rem;
+    padding: 0.5rem;
+    margin: 0.5rem auto;
+}
+
+.button-skin {
+    cursor: pointer;
+    background-color: #039be5;
+    border-radius: 10px;
+    font-weight: 500;
+    color: white;
+    border: none;
+    box-shadow: none;
+}
+
+.heart-container {
+    position: relative;
+}
+
+.heart {
+    width: 10rem;
+    margin: 1rem;
+    display: inline-block;
+}
+
+.result-text-skin {
+    font-family: "Righteous";
+    font-size: 1.5rem;
+    color: white;
+}
+
+.result-text {
+    color: white;
+    position: absolute;
+    top: 42.5%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@media all and (max-width: 750px) {
+    .centralized-container {
+        width: 100%;
+    }
+}

@@ -2,10 +2,22 @@
 <html lang="pt-bt">
     <head>
         <meta charset="UTF-8">
+        <link rel="stylesheet" href="/static/style.css">
         <title> {{ template "title" . }} </title>
+        <link rel="preconnect" href="https://fonts.googleapis.com"> 
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> 
+        <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
     </head>
-    <body>
-        {{ template "body" . }}
+
+    <body class="bg-skin">
+        <header class="centralized-container">
+            <h2 class="title-skin"> lovecalc.io </h2>
+        </header>
+        <main>
+            <article class="centralized-container">
+                {{ template "body" . }}
+            </article>
+        </main>
     </body>
 </body>
 {{ end }}

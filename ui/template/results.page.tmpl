@@ -3,7 +3,10 @@
 {{ define "title" }} Results {{ end }}
 
 {{ define "body" }}
-<h2> Compatibility: {{ .Result | toRoundedPercentage }} </h2>
-<button> <a href="/"> Try Again </a> </button>
+<div class="heart-container">
+    <img class="heart" src="/static/heart.png">
+    <span class="result-text result-text-skin"> {{ .Result | toRoundedPercentage }} </span>
+</div>
+<a href="/"><button class="button button-skin">  Try Again </button></a>
 {{ end }}
 
