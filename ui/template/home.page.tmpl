@@ -1,0 +1,11 @@
+{{ template "base" . }}
+
+{{ define "title" }} Home {{ end }}
+{{ define "body" }}
+<h2> lovecalc.io </h2>
+<form method="GET" action="/results">
+    <input type="name" name="first" placeholder="Primeiro Nome">
+    <input type="name" name="second" placeholder="Segundo Nome">
+    <input type="submit">
+</form>
+{{ end }}

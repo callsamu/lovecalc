@@ -1,0 +1,9 @@
+{{ template "base" . }}
+
+{{ define "title" }} Results {{ end }}
+
+{{ define "body" }}
+<h2> Compatibility: {{ .Result | toRoundedPercentage }} </h2>
+<button> <a href="/"> Try Again </a> </button>
+{{ end }}
+
