@@ -2,6 +2,7 @@
 <html lang="pt-bt">
     <head>
         <meta charset="UTF-8">
+        <link rel="stylesheet" href="/static/normalize.css">
         <link rel="stylesheet" href="/static/style.css">
         <title> {{ template "title" . }} </title>
         <link rel="preconnect" href="https://fonts.googleapis.com"> 
@@ -11,7 +12,9 @@
 
     <body class="bg-skin">
         <header class="centralized-container">
-            <h2 class="title-skin"> lovecalc.io </h2>
+            <h2 class="title-skin"> 
+                <span class="title-word-1">love</span><span class="title-word-2">calc</span>.org</span>
+            </h2>
         </header>
         <main>
             <article class="centralized-container">
@@ -19,5 +22,8 @@
             </article>
         </main>
     </body>
-</body>
+    {{ template "script" . }}
+</html>
 {{ end }}
+
+

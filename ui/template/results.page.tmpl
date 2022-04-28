@@ -3,10 +3,58 @@
 {{ define "title" }} Results {{ end }}
 
 {{ define "body" }}
+<h3> {{ .FirstName }} + {{ .SecondName }} </h3>
 <div class="heart-container">
     <img class="heart" src="/static/heart.png">
-    <span class="result-text result-text-skin"> {{ .Result | toRoundedPercentage }} </span>
+    <span class="result-text result-text-skin"><span id="result">0</span>%</span>
 </div>
-<a href="/"><button class="button button-skin">  Try Again </button></a>
+<a href="/"><button class="button button-skin">Try Again</button></a>
 {{ end }}
 
+{{ define "script" }}
+<script>
+
+function easeOut(x) {
+    return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+}
+
+function animate(obj, initVal, lastVal, duration) {
+
+    let startTime = null;
+
+    //get the current timestamp and assign it to the currentTime variable
+    let currentTime = Date.now();
+
+    //pass the current timestamp to the step function
+    const step = (currentTime) => {
+
+        //if the start time is null, assign the current time to startTime
+        if (!startTime) {
+              startTime = currentTime ;
+        }
+
+        //calculate the value to be used in calculating the number to be displayed
+        const progress = Math.min((currentTime  - startTime) / duration, 1);
+
+        //calculate what to be displayed using the value gotten above
+        obj.innerHTML = Math.floor(easeOut(progress) * (lastVal - initVal) + initVal);
+
+        //checking to make sure the counter does not exceed the last value (lastVal)
+        if (progress < 1) {
+              window.requestAnimationFrame(step);
+        }
+        else{
+              window.cancelAnimationFrame(window.requestAnimationFrame(step));
+        }
+    };
+
+    //start animating
+    window.requestAnimationFrame(step);
+}
+
+let span = document.getElementById('result');
+const result = "{{ .Result | toRoundedPercentage }}"
+animate(span, 0, result, 100 * result);
+
+</script>
+{{ end }}
