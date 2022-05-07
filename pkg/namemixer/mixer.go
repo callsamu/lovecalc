@@ -1,6 +1,18 @@
 package namemixer
 
-import "strings"
+import (
+	"strings"
+)
+
+func getFirstName(fullname string) string {
+	names := strings.SplitAfterN(fullname, " ", 2)
+
+	if names != nil {
+		return names[0]
+	}
+
+	return ""
+}
 
 func MixNames(first, second string) string {
 	syllabes := splitSyllabes(first)
@@ -9,7 +21,7 @@ func MixNames(first, second string) string {
 		firstHalf = firstHalf[:2]
 	}
 
-	syllabes = splitSyllabes(strings.ToLower(second))
+	syllabes = splitSyllabes(strings.ToLower(getFirstName(second)))
 	secondHalf, length := syllabes, len(syllabes)
 	if length > 2 {
 		secondHalf = secondHalf[length-2 : length]
