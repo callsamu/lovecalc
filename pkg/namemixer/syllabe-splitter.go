@@ -1,15 +1,10 @@
 package namemixer
 
+import "strings"
+
 var vowels = map[rune]struct{}{
 	'a': {}, 'e': {}, 'i': {}, 'o': {}, 'u': {},
 	'A': {}, 'E': {}, 'I': {}, 'O': {}, 'U': {},
-}
-
-func min(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
 }
 
 func nextVowel(runes []rune, start int) (int, bool) {
@@ -23,9 +18,9 @@ func nextVowel(runes []rune, start int) (int, bool) {
 	return 0, false
 }
 
-func SplitSyllabes(word string) []string {
+func splitSyllabes(word string) []string {
 	syllabes := []string{}
-	runes := []rune(word)
+	runes := []rune(strings.ReplaceAll(word, " ", ""))
 
 	start := 0
 	end := 0
