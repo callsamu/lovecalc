@@ -2,6 +2,8 @@ package main
 
 import (
 	"net/http"
+
+	mixer "github.com/callsamu/lovecalc/pkg/namemixer"
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
@@ -25,8 +27,12 @@ func (app *application) results(w http.ResponseWriter, r *http.Request) {
 	}
 
 	result := app.calculator.Compute(first, second)
+	name := mixer.MixNames(first, second)
 
 	app.render(w, r, "results.page.tmpl", &templateData{
-		Result: result,
+		Chance:     result,
+		MixedName:  name,
+		FirstName:  first,
+		SecondName: second,
 	})
 }
