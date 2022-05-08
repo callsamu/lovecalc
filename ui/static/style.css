@@ -1,15 +1,16 @@
 :root {
-    font-size: 16px;
+    font-size: 20px;
+    font-family: sans-serif;
+    color: #444;
 }
 
 main {
-    padding: 8rem;
+    padding: 7.5rem;
 }
 
 header {
     padding: 0.25rem;
-    border-bottom: 1px solid #EEE;
-    box-shadow: 1px black;
+    box-shadow: 0 2.5px 5px rgba(0,0,0,.05);
 }
 
 .centralized-container {
@@ -21,6 +22,14 @@ header {
     font-family: "Righteous";
     box-shadow: 1px solid black;
     color: #777;
+}
+
+.title-word-1 {
+    color: #E84C3B;
+}
+
+.title-word-2 {
+    color: #039be5;
 }
 
 .bg-skin {
@@ -43,7 +52,6 @@ header {
     color: #444;
 }
 
-
 .button {
     width: 12rem;
     padding: 0.5rem;
@@ -60,13 +68,45 @@ header {
     box-shadow: none;
 }
 
+@keyframes fade-in {
+    from { 
+        opacity: 0.00;
+    }
+    to { 
+        opacity: 1.00;
+    }
+}
+
+.fade-in-button-skin {
+    animation-name: fade-in;
+    animation-duration: 2s;
+    animation-delay: 5s;
+    animation-fill-mode: both;
+    animation-timing-function: ease-out;
+}
+
+@keyframes vertical-fade-in {
+    from { 
+        margin-top: 5rem; 
+        opacity: 0.00;
+    }
+    to { 
+        margin-top: 0; 
+        opacity: 1.00;
+    }
+}
+
 .heart-container {
     position: relative;
+    animation-name: vertical-fade-in; 
+    animation-duration: 2s;
+    animation-timing-function: ease-out;
 }
 
 .heart {
     width: 10rem;
     margin: 1rem;
+    color: blue;
     display: inline-block;
 }
 

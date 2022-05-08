@@ -4,11 +4,13 @@
 
 {{ define "body" }}
 <h3> {{ .FirstName }} + {{ .SecondName }} </h3>
+<h3> = {{ .MixedName }} </h3>
+
 <div class="heart-container">
     <img class="heart" src="/static/heart.png">
     <span class="result-text result-text-skin"><span id="result">0</span>%</span>
 </div>
-<a href="/"><button class="button button-skin">Try Again</button></a>
+<a href="/"><button class="button button-skin fade-in-button-skin">Try Again</button></a>
 {{ end }}
 
 {{ define "script" }}
@@ -53,8 +55,8 @@ function animate(obj, initVal, lastVal, duration) {
 }
 
 let span = document.getElementById('result');
-const result = "{{ .Result | toRoundedPercentage }}"
-animate(span, 0, result, 100 * result);
+const result = "{{ .Chance | toRoundedPercentage }}"
+animate(span, 0, result, 5000);
 
 </script>
 {{ end }}
