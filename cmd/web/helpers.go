@@ -34,6 +34,7 @@ func (app *application) render(w http.ResponseWriter, r *http.Request, view stri
 	err := ts.Execute(buf, td)
 	if err != nil {
 		app.serverError(w, err)
+		return
 	}
 
 	buf.WriteTo(w)
