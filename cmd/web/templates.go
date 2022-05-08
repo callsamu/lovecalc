@@ -1,17 +1,20 @@
 package main
 
 import (
-	"fmt"
 	"html/template"
+	"math"
 	"path/filepath"
 )
 
 type templateData struct {
-	Result float64
+	FirstName  string
+	SecondName string
+	Chance     float64
+	MixedName  string
 }
 
-func toRoundedPercentage(x float64) string {
-	return fmt.Sprintf("%.2f%%", x*100)
+func toRoundedPercentage(x float64) float64 {
+	return math.Round(10000*x) / 100
 }
 
 var functions = template.FuncMap{
