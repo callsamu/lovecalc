@@ -1,9 +1,5 @@
 package namemixer
 
-import (
-	"strings"
-)
-
 var vowels = map[rune]struct{}{
 	'a': {}, 'e': {}, 'i': {}, 'o': {}, 'u': {},
 	'A': {}, 'E': {}, 'I': {}, 'O': {}, 'U': {},
@@ -49,41 +45,4 @@ func removeDoubleVowels(s string) string {
 	}
 
 	return string(result)
-}
-
-func splitSyllabes(word string) []string {
-	word = strings.ReplaceAll(word, " ", "")
-	syllabes := []string{}
-	runes := []rune(word)
-
-	start := 0
-	end := 0
-
-	_, hasVowels := nextVowel(runes, start)
-	if !hasVowels {
-		return []string{word}
-	}
-
-	for {
-		pos, vowelsLeft := nextVowel(runes, start)
-		if !vowelsLeft {
-			return syllabes
-		}
-
-		peek, hasNextVowel := nextVowel(runes, pos+1)
-		if peek > pos+2 {
-			end = pos + 2
-		} else {
-			if !hasNextVowel {
-				end = len(runes)
-			} else {
-				end = pos + 1
-			}
-		}
-
-		syllabe := word[start:end]
-		syllabes = append(syllabes, syllabe)
-
-		start = end
-	}
 }
