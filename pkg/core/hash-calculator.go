@@ -4,6 +4,8 @@ import (
 	"encoding/binary"
 	"hash"
 	"math"
+
+	"github.com/callsamu/lovecalc/pkg/namemixer"
 )
 
 const maxValue = math.MaxUint32
@@ -18,7 +20,7 @@ func (c *HashCalculator) hash(b []byte) uint32 {
 }
 
 // Compute output value for two names
-func (c *HashCalculator) Compute(couple Couple) float64 {
+func (c *HashCalculator) Compute(couple Couple) *Match {
 	hash1 := c.hash([]byte(couple.FirstName))
 	hash2 := c.hash([]byte(couple.SecondName))
 
@@ -26,5 +28,8 @@ func (c *HashCalculator) Compute(couple Couple) float64 {
 	binary.LittleEndian.PutUint32(bytes, hash1+hash2)
 	hash3 := c.hash(bytes)
 
-	return float64(hash3) / maxValue
+	prob := float64(hash3) / maxValue
+	name := namemixer.MixNames(couple.FirstName, couple.SecondName)
+
+	return &Match{couple, name, prob}
 }
