@@ -14,7 +14,7 @@ const (
 )
 
 type Calculator interface {
-	Compute(string, string) float64
+	Compute(Couple) float64
 }
 
 func NewCalculator(algorithm string) (Calculator, error) {

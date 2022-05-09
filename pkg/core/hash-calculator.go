@@ -18,9 +18,9 @@ func (c *HashCalculator) hash(b []byte) uint32 {
 }
 
 // Compute output value for two names
-func (c *HashCalculator) Compute(first, second string) float64 {
-	hash1 := c.hash([]byte(first))
-	hash2 := c.hash([]byte(second))
+func (c *HashCalculator) Compute(couple Couple) float64 {
+	hash1 := c.hash([]byte(couple.FirstName))
+	hash2 := c.hash([]byte(couple.SecondName))
 
 	bytes := make([]byte, 4)
 	binary.LittleEndian.PutUint32(bytes, hash1+hash2)
