@@ -2,6 +2,7 @@ package redis
 
 import (
 	"bytes"
+	"context"
 	"encoding/gob"
 	"errors"
 
@@ -21,7 +22,10 @@ func NewMatchCache(rdc redis.Client) *MatchCache {
 }
 
 func (mc *MatchCache) Get(c core.Couple) (*core.Match, error) {
-	val, err := mc.Client.Get(nil, c.FirstName+c.SecondName).Bytes()
+	ctx := context.Background()
+	key := c.FirstName + c.SecondName
+
+	val, err := mc.Client.Get(ctx, key).Bytes()
 	if err != nil {
 		switch {
 		case errors.Is(err, redis.Nil):
