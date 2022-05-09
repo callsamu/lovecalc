@@ -4,13 +4,12 @@ import (
 	"html/template"
 	"math"
 	"path/filepath"
+
+	"github.com/callsamu/lovecalc/pkg/core"
 )
 
 type templateData struct {
-	FirstName  string
-	SecondName string
-	Chance     float64
-	MixedName  string
+	Match *core.Match
 }
 
 func toRoundedPercentage(x float64) float64 {
