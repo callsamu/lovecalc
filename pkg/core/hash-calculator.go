@@ -13,9 +13,7 @@ type HashCalculator struct {
 }
 
 func (c *HashCalculator) hash(b []byte) uint32 {
-	c.Hash.Write(b)
-	digest := c.Hash.Sum(nil)
-	c.Hash.Reset()
+	digest := c.Hash.Sum(b)
 	return binary.LittleEndian.Uint32(digest)
 }
 
