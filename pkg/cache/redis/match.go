@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/gob"
 	"errors"
+	"time"
 
 	"github.com/callsamu/lovecalc/pkg/cache"
 	"github.com/callsamu/lovecalc/pkg/core"
@@ -46,5 +47,13 @@ func (mc *MatchCache) Get(c core.Couple) (*core.Match, error) {
 }
 
 func (mc *MatchCache) Set(c core.Couple, m *core.Match) error {
-	return nil
+	ctx := context.Background()
+	key := c.FirstName + c.SecondName
+
+	var b bytes.Buffer
+	if err := gob.NewEncoder(&b).Encode(m); err != nil {
+		return err
+	}
+
+	return mc.Client.Set(ctx, key, b, time.Hour*24).Err()
 }
