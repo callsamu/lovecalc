@@ -13,10 +13,10 @@ import (
 )
 
 type MatchCache struct {
-	Client redis.Client
+	Client *redis.Client
 }
 
-func NewMatchCache(rdc redis.Client) *MatchCache {
+func NewMatchCache(rdc *redis.Client) *MatchCache {
 	return &MatchCache{
 		Client: rdc,
 	}
