@@ -15,7 +15,7 @@ type testServer struct {
 }
 
 func newTestApplication(t *testing.T) *application {
-	c, err := core.NewCalculator(core.HashingWithFNV)
+	c, err := core.NewCalculator(core.HashWithFNV)
 	if err != nil {
 		t.Fatal(err)
 	}
