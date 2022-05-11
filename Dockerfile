@@ -1,12 +1,12 @@
-FROM golang:1.17-alpine AS builder
-RUN mkdir /app
+FROM golang:latest AS build
 
-ADD . /build
 WORKDIR /build
+COPY . .
 
+ENV CGO_ENABLED=0
 RUN go mod download
-RUN go build -o main cmd/web/*
+RUN go build -o bin/app cmd/web/
 
-FROM alpine AS runner
-COPY --from=builder /build/main /bin/main
-ENTRYPOINT ["/bin/main", "port=:4000"]
+FROM scratch AS bin
+COPY --from=build /build/bin/app /app
+ENTRYPOINT ["/app"]
