@@ -1,5 +1,8 @@
 build: 
-	go build -o bin/web cmd/web/*
+	docker-compose -f docker-compose.yml build
 
 run: build
-	bin/./web
+	docker-compose -f docker-compose.yml up
+
+test: 
+	docker-compose -f docker-compose.test.yml up --build
