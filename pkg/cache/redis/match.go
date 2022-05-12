@@ -1,9 +1,8 @@
 package redis
 
 import (
-	"bytes"
 	"context"
-	"encoding/gob"
+	"encoding/json"
 	"errors"
 	"time"
 
@@ -36,24 +35,22 @@ func (mc *MatchCache) Get(c core.Couple) (*core.Match, error) {
 		}
 	}
 
-	var match core.Match
-	b := bytes.NewReader(val)
-
-	if err = gob.NewDecoder(b).Decode(&match); err != nil {
+	m := &core.Match{}
+	if err = json.Unmarshal(val, m); err != nil {
 		return nil, err
 	}
 
-	return &match, nil
+	return m, nil
 }
 
 func (mc *MatchCache) Set(c core.Couple, m *core.Match) error {
-	ctx := context.Background()
-	key := c.FirstName + c.SecondName
-
-	var b bytes.Buffer
-	if err := gob.NewEncoder(&b).Encode(m); err != nil {
+	b, err := json.Marshal(m)
+	if err != nil {
 		return err
 	}
+
+	key := c.FirstName + c.SecondName
+	ctx := context.Background()
 
 	return mc.Client.Set(ctx, key, b, time.Hour*24).Err()
 }
