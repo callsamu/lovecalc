@@ -8,9 +8,14 @@ import (
 )
 
 func newTestRedisClient(t *testing.T) (*redis.Client, func()) {
-	opt, err := redis.ParseURL(os.Getenv("REDIS_URL"))
+	url := os.Getenv("REDIS_URL")
+	if url == "" {
+		t.Fatal("redis url not supplied")
+	}
+
+	opt, err := redis.ParseURL(url)
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 
 	rdb := redis.NewClient(opt)

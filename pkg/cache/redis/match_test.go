@@ -22,12 +22,12 @@ func TestGetCache(t *testing.T) {
 
 	err := mc.Set(key, want)
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 
 	got, err := mc.Get(key)
 	if err != nil {
-		t.Error(err)
+		t.Fatal(err)
 	}
 
 	if !reflect.DeepEqual(want, got) {
