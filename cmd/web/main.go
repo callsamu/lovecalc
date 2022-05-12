@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"flag"
 	"fmt"
 	"html/template"
@@ -41,6 +42,7 @@ func main() {
 	c, err := core.NewCalculator(*algorithm)
 	if err != nil {
 		log.Fatal(err)
+		return
 	}
 
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
@@ -49,6 +51,7 @@ func main() {
 	rdb, err := newRedisClient(*redisUrl)
 	if err != nil {
 		log.Fatal(err)
+		return
 	}
 	matchCache := redisc.NewMatchCache(rdb)
 
@@ -56,6 +59,7 @@ func main() {
 	fmt.Println(templateCache)
 	if err != nil {
 		log.Fatal(err)
+		return
 	}
 
 	app := application{
