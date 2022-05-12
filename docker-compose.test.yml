@@ -10,9 +10,11 @@ services:
     depends_on:
       - redis
     environment:
-      REDIS_URL: redis://testing:6379/2
+      - REDIS_URL=redis://redis:6379/2
   redis:
     image: redis:7.0.0-alpine
+    ports:
+      - 6379:6379
     networks:
       - testing
 
