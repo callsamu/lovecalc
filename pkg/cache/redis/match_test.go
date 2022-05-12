@@ -18,19 +18,24 @@ func TestGetCache(t *testing.T) {
 	mc := NewMatchCache(rdb)
 
 	key := core.Couple{FirstName: "foo", SecondName: "bar"}
-	want := &core.Match{Couple: key, CoupleName: "foobar", Probability: 2.0}
+	want := core.Match{Couple: key, CoupleName: "foobar", Probability: 2.0}
 
-	err := mc.Set(key, want)
-	if err != nil {
-		t.Fatal(err)
-	}
+	t.Run("set cache key", func(t *testing.T) {
+		err := mc.Set(key, &want)
+		if err != nil {
+			t.Fatal(err)
+		}
+	})
 
-	got, err := mc.Get(key)
-	if err != nil {
-		t.Fatal(err)
-	}
+	t.Run("get cache key", func(t *testing.T) {
+		got, err := mc.Get(key)
+		if err != nil {
+			t.Fatal(err)
+		}
 
-	if !reflect.DeepEqual(want, got) {
-		t.Errorf("want %v; got %v", want, got)
-	}
+		if !reflect.DeepEqual(want, *got) {
+			t.Errorf("want %v; got %v", want, *got)
+		}
+	})
+
 }
