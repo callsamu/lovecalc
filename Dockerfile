@@ -1,11 +1,14 @@
-FROM golang:latest AS build
-
+FROM golang:latest AS base
 WORKDIR /build
 COPY . .
-
-ENV CGO_ENABLED=0
 RUN go mod download
-RUN go build -o bin/app cmd/web/
+ENV CGO_ENABLED=0
+
+FROM base AS build
+RUN go build -o bin/app /build/cmd/web/
+
+FROM base AS test
+RUN go test -v ./...
 
 FROM scratch AS bin
 COPY --from=build /build/bin/app /app

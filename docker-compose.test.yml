@@ -3,20 +3,18 @@ services:
   app:
     build:
       context: .
-      target: bin
+      target: test
       dockerfile: ./Dockerfile
-    ports:
-      - 4000:4000
+    networks:
+      - testing
     depends_on:
       - redis
-    networks:
-      - internal
     environment:
-      REDIS_URL: redis://internal:6379/1
+      REDIS_URL: redis://testing:6379/2
   redis:
     image: redis:7.0.0-alpine
     networks:
-      - internal
+      - testing
 
 networks:
-  internal: {}
+  testing: {}
