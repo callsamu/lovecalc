@@ -7,6 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/callsamu/lovecalc/pkg/cache/mock"
 	"github.com/callsamu/lovecalc/pkg/core"
 )
 
@@ -23,14 +24,17 @@ func newTestApplication(t *testing.T) *application {
 	infoLog := log.New(ioutil.Discard, "", 0)
 	errorLog := log.New(ioutil.Discard, "", 0)
 
-	cache, err := newTemplateCache("./../../ui/template/")
+	tc, err := newTemplateCache("./../../ui/template/")
 	if err != nil {
 		t.Fatal(err)
 	}
 
+	mc := mock.NewMatchCache()
+
 	return &application{
 		calculator:    c,
-		templateCache: cache,
+		matchCache:    mc,
+		templateCache: tc,
 		infoLog:       infoLog,
 		errorLog:      errorLog,
 	}
