@@ -68,8 +68,8 @@ func TestResults(t *testing.T) {
 				t.Errorf("expected status %d, but got %d", ts.wantStatus, rr.Code)
 			}
 
-			_, ok := req.Context().Value("form")(*forms.Form)
-			if !ok {
+			form := req.Context().Value(formCtxKey)
+			if form == nil {
 				t.Error("expected request context to contain a form")
 			}
 		})
