@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/callsamu/lovecalc/pkg/core"
+	"github.com/callsamu/lovecalc/pkg/forms"
 )
 
 func TestHome(t *testing.T) {
@@ -65,6 +66,11 @@ func TestResults(t *testing.T) {
 
 			if rr.Code != ts.wantStatus {
 				t.Errorf("expected status %d, but got %d", ts.wantStatus, rr.Code)
+			}
+
+			_, ok := req.Context().Value("form")(*forms.Form)
+			if !ok {
+				t.Error("expected request context to contain a form")
 			}
 		})
 	}
