@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"net/http"
 
@@ -26,6 +27,7 @@ func (app *application) results(w http.ResponseWriter, r *http.Request) {
 		MaxLength("second", 32)
 
 	if !form.Valid() {
+		r.WithContext(context.WithValue(r.Context(), "form", form))
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
