@@ -37,10 +37,12 @@ func (f *Form) MaxLength(field string, max int) *Form {
 	return f
 }
 
-func (f *Form) UnicodeLettersOnly(field string) *Form {
-	for _, rune := range []rune(f.Get(field)) {
-		if !(unicode.IsLetter(rune) || unicode.IsSpace(rune)) {
-			f.errors.Add(field, "field contains invalid characters")
+func (f *Form) UnicodeLettersOnly(fields ...string) *Form {
+	for _, field := range fields {
+		for _, rune := range []rune(f.Get(field)) {
+			if !(unicode.IsLetter(rune) || unicode.IsSpace(rune)) {
+				f.errors.Add(field, "field contains invalid characters")
+			}
 		}
 	}
 
