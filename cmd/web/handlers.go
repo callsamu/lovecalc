@@ -6,6 +6,7 @@ import (
 
 	"github.com/callsamu/lovecalc/pkg/cache"
 	"github.com/callsamu/lovecalc/pkg/core"
+	"github.com/callsamu/lovecalc/pkg/forms"
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
@@ -18,16 +19,20 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) results(w http.ResponseWriter, r *http.Request) {
-	query := r.URL.Query()
+	form := forms.New(r.URL.Query())
+	form.Required("first", "second").
+		UnicodeLettersOnly("first", "second").
+		MaxLength("first", 32).
+		MaxLength("second", 32)
 
-	couple := core.Couple{
-		FirstName:  query.Get("first"),
-		SecondName: query.Get("second"),
-	}
-
-	if couple.FirstName == "" || couple.SecondName == "" {
+	if !form.Valid() {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
+	}
+
+	couple := core.Couple{
+		FirstName:  form.Get("first"),
+		SecondName: form.Get("second"),
 	}
 
 	match, err := app.matchCache.Get(couple)
