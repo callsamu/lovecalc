@@ -19,26 +19,32 @@ func New(values url.Values) *Form {
 	}
 }
 
-func (f *Form) Required(fields ...string) {
+func (f *Form) Required(fields ...string) *Form {
 	for _, field := range fields {
 		if f.Get(field) == "" {
 			f.errors.Add(field, "field is required")
 		}
 	}
+
+	return f
 }
 
-func (f *Form) MaxLength(field string, max int) {
+func (f *Form) MaxLength(field string, max int) *Form {
 	if utf8.RuneCountInString(field) > max {
 		f.errors.Add(field, fmt.Sprintf("field must not be longer than %d characters", max))
 	}
+
+	return f
 }
 
-func (f *Form) UnicodeLettersOnly(field string) {
+func (f *Form) UnicodeLettersOnly(field string) *Form {
 	for _, rune := range []rune(f.Get(field)) {
 		if !(unicode.IsLetter(rune) || unicode.IsSpace(rune)) {
 			f.errors.Add(field, "field contains invalid characters")
 		}
 	}
+
+	return f
 }
 
 func (f *Form) Valid() bool {
