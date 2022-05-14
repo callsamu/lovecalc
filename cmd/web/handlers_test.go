@@ -53,6 +53,7 @@ func TestResults(t *testing.T) {
 		wantStatus int
 	}{
 		{"test not supplied parameters", "", "", http.StatusSeeOther},
+		{"test invalid parameters", "!!$", "!$#", http.StatusSeeOther},
 	}
 
 	for _, ts := range cases {
