@@ -11,11 +11,10 @@ func TestCalculatorProperties(t *testing.T) {
 		r1 := c.Compute(Couple{s1, s2}).Probability
 		r2 := c.Compute(Couple{s2, s1}).Probability
 
-		t.Logf("testing %s + %s = %f\n", s1, s2, r1)
 		return r1 == r2 && 0 <= r1 && r1 <= 1
 	}
 
-	config := &quick.Config{MaxCount: 100000}
+	config := &quick.Config{MaxCount: 1000}
 	if err := quick.Check(f, config); err != nil {
 		t.Error(err)
 	}
