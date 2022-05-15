@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"errors"
 	"net/http"
 
@@ -10,24 +9,13 @@ import (
 	"github.com/callsamu/lovecalc/pkg/forms"
 )
 
-const formCtxKey = "form"
-
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	if r.URL.RequestURI() != "/" {
 		app.notFound(w)
 		return
 	}
 
-	form := r.Context().Value(formCtxKey)
-	if form == nil {
-		app.render(w, r, "home.page.tmpl", &templateData{})
-		return
-	}
-
-	form = form(*forms.Form)
-	app.render(w, r, "home.page.tmpl", &templateData{
-		Forms: form,
-	})
+	app.render(w, r, "home.page.tmpl", &templateData{})
 }
 
 func (app *application) results(w http.ResponseWriter, r *http.Request) {
@@ -38,8 +26,7 @@ func (app *application) results(w http.ResponseWriter, r *http.Request) {
 		MaxLength("second", 32)
 
 	if !form.Valid() {
-		r.WithContext(context.WithValue(r.Context(), formCtxKey, form))
-		http.Redirect(w, r, "/", http.StatusSeeOther)
+		app.render(w, r, "home.page.tmpl", &templateData{Form: form})
 		return
 	}
 
