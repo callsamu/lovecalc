@@ -6,10 +6,12 @@ import (
 	"path/filepath"
 
 	"github.com/callsamu/lovecalc/pkg/core"
+	"github.com/callsamu/lovecalc/pkg/forms"
 )
 
 type templateData struct {
 	Match *core.Match
+	Form  *forms.Form
 }
 
 func toRoundedPercentage(x float64) float64 {
