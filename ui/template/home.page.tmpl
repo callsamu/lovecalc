@@ -3,7 +3,13 @@
 {{ define "title" }} Home {{ end }}
 {{ define "body" }}
 <form method="GET" action="/results" class="stacked centralized-container">
+    {{ with .Form }}
+        <p class="error">{{ .Errors.Get "first" }}</p>
+    {{ end }}
     <input class="text-input text-input-skin" type="name" name="first" placeholder="Primeiro Nome">
+    {{ with .Form }}
+    <p class="error">{{ .Errors.Get "second" }}</p>
+    {{ end }}
     <input class="text-input text-input-skin" type="name" name="second" placeholder="Segundo Nome">
     <input class="button button-skin" type="submit" value="Ver Resultado">
 </form>
