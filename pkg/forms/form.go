@@ -9,20 +9,20 @@ import (
 
 type Form struct {
 	url.Values
-	errors errors
+	Errors errors
 }
 
 func New(values url.Values) *Form {
 	return &Form{
 		Values: values,
-		errors: errors{},
+		Errors: errors{},
 	}
 }
 
 func (f *Form) Required(fields ...string) *Form {
 	for _, field := range fields {
 		if f.Get(field) == "" {
-			f.errors.Add(field, "field is required")
+			f.Errors.Add(field, "field is required")
 		}
 	}
 
@@ -31,7 +31,7 @@ func (f *Form) Required(fields ...string) *Form {
 
 func (f *Form) MaxLength(field string, max int) *Form {
 	if utf8.RuneCountInString(field) > max {
-		f.errors.Add(field, fmt.Sprintf("field must not be longer than %d characters", max))
+		f.Errors.Add(field, fmt.Sprintf("field must not be longer than %d characters", max))
 	}
 
 	return f
@@ -41,7 +41,7 @@ func (f *Form) UnicodeLettersOnly(fields ...string) *Form {
 	for _, field := range fields {
 		for _, rune := range []rune(f.Get(field)) {
 			if !(unicode.IsLetter(rune) || unicode.IsSpace(rune)) {
-				f.errors.Add(field, "field contains invalid characters")
+				f.Errors.Add(field, "field contains invalid characters")
 			}
 		}
 	}
@@ -50,5 +50,5 @@ func (f *Form) UnicodeLettersOnly(fields ...string) *Form {
 }
 
 func (f *Form) Valid() bool {
-	return len(f.errors) == 0
+	return len(f.Errors) == 0
 }
