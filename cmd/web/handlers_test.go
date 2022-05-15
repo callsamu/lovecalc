@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -48,13 +49,12 @@ func TestResults(t *testing.T) {
 	app := newTestApplication(t)
 
 	cases := []struct {
-		name       string
-		first      string
-		second     string
-		wantStatus int
+		name   string
+		first  string
+		second string
 	}{
-		{"test not supplied parameters", "", "", http.StatusSeeOther},
-		{"test invalid parameters", "!!$", "!$#", http.StatusSeeOther},
+		{"test not supplied parameters", "", ""},
+		{"test invalid parameters", "!!$", "!$#"},
 	}
 
 	for _, ts := range cases {
@@ -62,15 +62,28 @@ func TestResults(t *testing.T) {
 			rr := httptest.NewRecorder()
 			url := fmt.Sprintf("/results?first=%s&second=%s", ts.first, ts.second)
 			req, _ := http.NewRequest("GET", url, nil)
-			app.results(rr, req)
 
-			if rr.Code != ts.wantStatus {
-				t.Errorf("expected status %d, but got %d", ts.wantStatus, rr.Code)
+			form := forms.New(req.URL.Query())
+			form.Required("first", "second").
+				UnicodeLettersOnly("first", "second").
+				MaxLength("first", 32).
+				MaxLength("second", 32)
+
+			app.results(rr, req)
+			body, err := ioutil.ReadAll(rr.Result().Body)
+			if err != nil {
+				t.Error(err)
+				return
 			}
 
-			_, ok := req.Context().Value("form")(*forms.Form)
-			if !ok {
-				t.Error("expected request context to contain a form")
+			firstErr := []byte(form.Errors.Get("first"))
+			secondErr := []byte(form.Errors.Get("second"))
+
+			if !bytes.Contains(body, firstErr) {
+				t.Errorf("expected body to contain substring \"%s\"", firstErr)
+			}
+			if !bytes.Contains(body, secondErr) {
+				t.Errorf("expected body to contain substring \"%s\"", secondErr)
 			}
 		})
 	}
