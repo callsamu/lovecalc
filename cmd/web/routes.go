@@ -13,8 +13,8 @@ func (app *application) routes() http.Handler {
 	r.Use(app.logRequests)
 	r.Use(app.recoverPanic)
 
-	r.Get("/", app.home)
-	r.Get("/results", app.results)
+	r.Get("/{lang}/", app.home)
+	r.Get("/{lang}/love", app.love)
 
 	fileServer := http.FileServer(http.Dir("./ui/static/"))
 	r.Handle("/static/", http.StripPrefix("/static", fileServer))

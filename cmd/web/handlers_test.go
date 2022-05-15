@@ -24,7 +24,7 @@ func TestHome(t *testing.T) {
 	}
 }
 
-func TestResultsE2E(t *testing.T) {
+func TestLoveE2E(t *testing.T) {
 	app := newTestApplication(t)
 
 	srv := newTestServer(t, app.routes())
@@ -34,7 +34,7 @@ func TestResultsE2E(t *testing.T) {
 	})
 	prob := fmt.Sprintf("%d", int(toRoundedPercentage(match.Probability)))
 
-	status, _, body := srv.get(t, "/results?first=ha&second=he")
+	status, _, body := srv.get(t, "/en/love?first=ha&second=he")
 
 	if status != http.StatusOK {
 		t.Errorf("expected status 200 OK, but got %d", status)
@@ -45,7 +45,7 @@ func TestResultsE2E(t *testing.T) {
 	}
 }
 
-func TestResults(t *testing.T) {
+func TestLove(t *testing.T) {
 	app := newTestApplication(t)
 
 	cases := []struct {
@@ -60,7 +60,7 @@ func TestResults(t *testing.T) {
 	for _, ts := range cases {
 		t.Run(ts.name, func(t *testing.T) {
 			rr := httptest.NewRecorder()
-			url := fmt.Sprintf("/results?first=%s&second=%s", ts.first, ts.second)
+			url := fmt.Sprintf("/en/love?first=%s&second=%s", ts.first, ts.second)
 			req, _ := http.NewRequest("GET", url, nil)
 
 			form := forms.New(req.URL.Query())
@@ -69,7 +69,7 @@ func TestResults(t *testing.T) {
 				MaxLength("first", 32).
 				MaxLength("second", 32)
 
-			app.results(rr, req)
+			app.love(rr, req)
 			body, err := ioutil.ReadAll(rr.Result().Body)
 			if err != nil {
 				t.Error(err)

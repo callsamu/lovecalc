@@ -18,7 +18,7 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	app.render(w, r, "home.page.tmpl", &templateData{})
 }
 
-func (app *application) results(w http.ResponseWriter, r *http.Request) {
+func (app *application) love(w http.ResponseWriter, r *http.Request) {
 	form := forms.New(r.URL.Query())
 	form.Required("first", "second").
 		UnicodeLettersOnly("first", "second").
