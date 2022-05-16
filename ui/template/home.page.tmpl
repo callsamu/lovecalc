@@ -6,12 +6,12 @@
     {{ with .Form }}
         <p class="error">{{ .Errors.Get "first" }}</p>
     {{ end }}
-    <input class="text-input text-input-skin" type="name" name="first" placeholder="Primeiro Nome">
+    <input class="text-input text-input-skin" type="name" name="first" placeholder="{{ t "FirstNamePlaceholder" . }}">
     {{ with .Form }}
     <p class="error">{{ .Errors.Get "second" }}</p>
     {{ end }}
-    <input class="text-input text-input-skin" type="name" name="second" placeholder="Segundo Nome">
-    <input class="button button-skin" type="submit" value="Ver Resultado">
+    <input class="text-input text-input-skin" type="name" name="second" placeholder="{{ t "SecondNamePlaceholder" . }}">
+    <input class="button button-skin" type="submit" value="{{ t "SubmitMatchData" . }}">
 </form>
 {{ end }}
 
