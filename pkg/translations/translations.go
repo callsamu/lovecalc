@@ -17,11 +17,14 @@ func Load(lfs fs.FS, defaultLang language.Tag) (*i18n.Bundle, error) {
 	bundle.RegisterUnmarshalFunc("toml", toml.Unmarshal)
 
 	err := fs.WalkDir(lfs, ".", func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
 		if d.IsDir() {
 			return nil
 		}
 
-		mf, err := bundle.LoadMessageFileFS(lfs, d.Name())
+		mf, err := bundle.LoadMessageFileFS(lfs, path+d.Name())
 		if err != nil {
 			return err
 		}
