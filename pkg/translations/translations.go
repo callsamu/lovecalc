@@ -24,7 +24,7 @@ func Load(lfs fs.FS, defaultLang language.Tag) (*i18n.Bundle, error) {
 			return nil
 		}
 
-		mf, err := bundle.LoadMessageFileFS(lfs, path+d.Name())
+		mf, err := bundle.LoadMessageFileFS(lfs, path)
 		if err != nil {
 			return err
 		}
