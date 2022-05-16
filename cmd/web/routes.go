@@ -9,12 +9,12 @@ import (
 func (app *application) routes() http.Handler {
 	r := chi.NewRouter()
 
-	r.Use(secureHeaders)
-	r.Use(app.logRequests)
-	r.Use(app.recoverPanic)
+	r.Use(secureHeaders, app.logRequests, app.recoverPanic)
 
-	r.Get("/{lang}/", app.home)
-	r.Get("/{lang}/love", app.love)
+	r.Route("/{lang:[a-z][a-z]}", func(r chi.Router) {
+		r.Get("/", app.home)
+		r.Get("/love", app.love)
+	})
 
 	fileServer := http.FileServer(http.Dir("./ui/static/"))
 	r.Handle("/static/", http.StripPrefix("/static", fileServer))
