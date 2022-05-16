@@ -12,7 +12,10 @@ import (
 	"github.com/callsamu/lovecalc/pkg/cache"
 	redisc "github.com/callsamu/lovecalc/pkg/cache/redis"
 	"github.com/callsamu/lovecalc/pkg/core"
+	"github.com/callsamu/lovecalc/pkg/translations"
 	"github.com/go-redis/redis/v8"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
+	"golang.org/x/text/language"
 )
 
 type application struct {
@@ -21,6 +24,7 @@ type application struct {
 	errorLog      *log.Logger
 	templateCache map[string]*template.Template
 	matchCache    cache.MatchCache
+	localizers    map[string]*i18n.Localizer
 }
 
 func newRedisClient(url string) (*redis.Client, error) {
@@ -54,19 +58,22 @@ func main() {
 	}
 	matchCache := redisc.NewMatchCache(rdb)
 
-	templateCache, err := newTemplateCache("./ui/template/")
-	fmt.Println(templateCache)
+	bundle, err := translations.Load(translations.LocalesFS, language.English)
 	if err != nil {
 		log.Fatal(err)
-		return
 	}
 
 	app := application{
 		calculator:    c,
 		infoLog:       infoLog,
 		errorLog:      errorLog,
-		templateCache: templateCache,
 		matchCache:    matchCache,
+		localizers:    newLocalizers(bundle),
+		templateCache: map[string]*template.Template{},
+	}
+	err = app.initTemplateCache("./ui/template")
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	srv := &http.Server{
