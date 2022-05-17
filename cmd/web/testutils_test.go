@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
 
 	"github.com/callsamu/lovecalc/pkg/cache/mock"
@@ -25,7 +26,7 @@ func newTestApplication(t *testing.T) *application {
 	}
 
 	infoLog := log.New(ioutil.Discard, "", 0)
-	errorLog := log.New(ioutil.Discard, "", 0)
+	errorLog := log.New(os.Stderr, "TEST ERROR:\t", 0)
 
 	if err != nil {
 		t.Fatal(err)
@@ -36,7 +37,7 @@ func newTestApplication(t *testing.T) *application {
 		t.Fatal(err)
 	}
 
-	return &application{
+	app := &application{
 		calculator:    c,
 		infoLog:       infoLog,
 		errorLog:      errorLog,
@@ -44,6 +45,9 @@ func newTestApplication(t *testing.T) *application {
 		localizers:    newLocalizers(bundle),
 		templateCache: map[string]*template.Template{},
 	}
+
+	app.initTemplateCache("./../../ui/template/")
+	return app
 }
 
 func newTestServer(t *testing.T, h http.Handler) *testServer {
