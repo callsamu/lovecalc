@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -60,21 +61,22 @@ func TestLove(t *testing.T) {
 	for _, ts := range cases {
 		t.Run(ts.name, func(t *testing.T) {
 			rr := httptest.NewRecorder()
-			url := fmt.Sprintf("/en/love?first=%s&second=%s", ts.first, ts.second)
+			url := fmt.Sprintf("/love?first=%s&second=%s", ts.first, ts.second)
 			req, _ := http.NewRequest("GET", url, nil)
+			ctx := context.WithValue(req.Context(), contextKeyLang, "en")
+
+			app.love(rr, req.WithContext(ctx))
+			body, err := ioutil.ReadAll(rr.Result().Body)
+			if err != nil {
+				t.Error(err)
+				return
+			}
 
 			form := forms.New(req.URL.Query())
 			form.Required("first", "second").
 				UnicodeLettersOnly("first", "second").
 				MaxLength("first", 32).
 				MaxLength("second", 32)
-
-			app.love(rr, req)
-			body, err := ioutil.ReadAll(rr.Result().Body)
-			if err != nil {
-				t.Error(err)
-				return
-			}
 
 			firstErr := []byte(form.Errors.Get("first"))
 			secondErr := []byte(form.Errors.Get("second"))
