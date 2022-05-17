@@ -39,3 +39,12 @@ func (app *application) render(w http.ResponseWriter, r *http.Request, view stri
 
 	buf.WriteTo(w)
 }
+
+func (app *application) lang(r *http.Request) string {
+	lang, ok := r.Context().Value("lang").(string)
+	if !ok {
+		return ""
+	}
+
+	return lang
+}
