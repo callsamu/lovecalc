@@ -41,7 +41,7 @@ func (app *application) render(w http.ResponseWriter, r *http.Request, view stri
 }
 
 func (app *application) lang(r *http.Request) string {
-	lang, ok := r.Context().Value("lang").(string)
+	lang, ok := r.Context().Value(contextKeyLang).(string)
 	if !ok {
 		return ""
 	}

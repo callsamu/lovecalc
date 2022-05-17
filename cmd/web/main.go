@@ -18,6 +18,10 @@ import (
 	"golang.org/x/text/language"
 )
 
+type contextKey string
+
+var contextKeyLang = contextKey("lang")
+
 type application struct {
 	calculator    core.Calculator
 	infoLog       *log.Logger
