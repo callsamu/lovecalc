@@ -7,23 +7,13 @@ import (
 	"github.com/callsamu/lovecalc/pkg/cache"
 	"github.com/callsamu/lovecalc/pkg/core"
 	"github.com/callsamu/lovecalc/pkg/forms"
-	"github.com/go-chi/chi/v5"
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
-	if r.URL.RequestURI() != "/" {
-		app.notFound(w)
-		return
-	}
-
-	app.render(w, r, "home.page.tmpl", &templateData{
-		Lang: chi.URLParam(r, "lang"),
-	})
+	app.render(w, r, "home.page.tmpl", &templateData{})
 }
 
 func (app *application) love(w http.ResponseWriter, r *http.Request) {
-	lang := chi.URLParam(r, "lang")
-
 	form := forms.New(r.URL.Query())
 	form.Required("first", "second").
 		UnicodeLettersOnly("first", "second").
@@ -31,10 +21,7 @@ func (app *application) love(w http.ResponseWriter, r *http.Request) {
 		MaxLength("second", 32)
 
 	if !form.Valid() {
-		app.render(w, r, "home.page.tmpl", &templateData{
-			Form: form,
-			Lang: lang,
-		})
+		app.render(w, r, "home.page.tmpl", &templateData{Form: form})
 		return
 	}
 
@@ -59,8 +46,5 @@ func (app *application) love(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	app.render(w, r, "results.page.tmpl", &templateData{
-		Match: match,
-		Lang:  lang,
-	})
+	app.render(w, r, "results.page.tmpl", &templateData{Match: match})
 }
