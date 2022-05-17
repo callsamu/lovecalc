@@ -23,7 +23,12 @@ func (app *application) notFound(w http.ResponseWriter) {
 	app.clientError(w, http.StatusNotFound)
 }
 
+func (app *application) defaultTemplateData(r *http.Request, td *templateData) {
+	td.Lang = app.lang(r)
+}
+
 func (app *application) render(w http.ResponseWriter, r *http.Request, view string, td *templateData) {
+	app.defaultTemplateData(r, td)
 	ts, ok := app.templateCache[view]
 	if !ok {
 		app.serverError(w, fmt.Errorf("The template %s does not exists", view))
