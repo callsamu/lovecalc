@@ -18,6 +18,14 @@ func secureHeaders(next http.Handler) http.Handler {
 	})
 }
 
+func (app *application) langToCtx(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		langURL := chi.URLParam(r, "lang")
+		ctx := context.WithValue(r.Context(), "lang", langURL)
+		next.ServeHTTP(w, r.WithContext(ctx))
+	})
+}
+
 func (app *application) detectLanguage(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		langURL := chi.URLParam(r, "lang")
