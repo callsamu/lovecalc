@@ -1,12 +1,10 @@
 package main
 
 import (
-	"errors"
+	"fmt"
 
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 )
-
-var errLocalizerNotFound = errors.New("localizers: localizer not found")
 
 type LocalizerFunc func(string, *templateData) (string, error)
 
@@ -28,7 +26,7 @@ func newLocalizerFunc(localizers map[string]*i18n.Localizer) LocalizerFunc {
 		lang := td.Lang
 		local, ok := localizers[lang]
 		if !ok {
-			return "", errLocalizerNotFound
+			return "", fmt.Errorf("locale \"%s\" wasn't found", lang)
 		}
 
 		message, err := local.Localize(&i18n.LocalizeConfig{
