@@ -1,6 +1,7 @@
 package main
 
 import (
+	"html/template"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -9,6 +10,8 @@ import (
 
 	"github.com/callsamu/lovecalc/pkg/cache/mock"
 	"github.com/callsamu/lovecalc/pkg/core"
+	"github.com/callsamu/lovecalc/pkg/translations"
+	"golang.org/x/text/language"
 )
 
 type testServer struct {
@@ -24,19 +27,22 @@ func newTestApplication(t *testing.T) *application {
 	infoLog := log.New(ioutil.Discard, "", 0)
 	errorLog := log.New(ioutil.Discard, "", 0)
 
-	tc, err := newTemplateCache("./../../ui/template/")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	mc := mock.NewMatchCache()
+	bundle, err := translations.Load(translations.LocalesFS, language.English)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	return &application{
 		calculator:    c,
-		matchCache:    mc,
-		templateCache: tc,
 		infoLog:       infoLog,
 		errorLog:      errorLog,
+		matchCache:    mock.NewMatchCache(),
+		localizers:    newLocalizers(bundle),
+		templateCache: map[string]*template.Template{},
 	}
 }
 
