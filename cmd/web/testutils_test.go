@@ -12,7 +12,6 @@ import (
 	"github.com/callsamu/lovecalc/pkg/cache/mock"
 	"github.com/callsamu/lovecalc/pkg/core"
 	"github.com/callsamu/lovecalc/pkg/translations"
-	"golang.org/x/text/language"
 )
 
 type testServer struct {
@@ -32,7 +31,7 @@ func newTestApplication(t *testing.T) *application {
 		t.Fatal(err)
 	}
 
-	bundle, err := translations.Load(translations.LocalesFS, language.English)
+	bundle, err := translations.Load(translations.LocalesFS, defaultLang)
 	if err != nil {
 		t.Fatal(err)
 	}

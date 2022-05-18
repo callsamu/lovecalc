@@ -13,12 +13,13 @@ func (app *application) routes() http.Handler {
 
 	r.Route("/{lang:[a-z][a-z]}", func(r chi.Router) {
 		r.Use(app.langToCtx)
+
 		r.Get("/", app.home)
 		r.Get("/love", app.love)
 	})
 
 	fileServer := http.FileServer(http.Dir("./ui/static/"))
-	r.Handle("/static/", http.StripPrefix("/static", fileServer))
+	r.Handle("/static/*", http.StripPrefix("/static", fileServer))
 
 	return r
 }
