@@ -15,10 +15,11 @@ import (
 
 func TestHome(t *testing.T) {
 	app := newTestApplication(t)
-	req, _ := http.NewRequest("GET", "/", nil)
 	rr := httptest.NewRecorder()
+	req, _ := http.NewRequest("GET", "/", nil)
+	ctx := context.WithValue(req.Context(), contextKeyLang, "en")
 
-	app.home(rr, req)
+	app.home(rr, req.WithContext(ctx))
 
 	if rr.Code != http.StatusOK {
 		t.Errorf("expected status 200 OK, but got %d", rr.Code)
