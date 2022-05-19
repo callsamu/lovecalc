@@ -9,16 +9,16 @@ import (
 	"golang.org/x/text/language"
 )
 
-var mockTranslation = []byte(`
-[foo]
-description = "foo"
-other = "bazr"
-`)
+const mockTranslation = `
+	[foo]
+	description = "foo"
+	other = "bazr"
+`
 
 func TestTranslationLoadingE2E(t *testing.T) {
 	fs := fstest.MapFS{
 		"mock.en.toml": &fstest.MapFile{
-			Data:    mockTranslation,
+			Data:    []byte(mockTranslation),
 			Mode:    fs.ModeAppend,
 			ModTime: time.Now(),
 			Sys:     nil,
