@@ -28,23 +28,6 @@ func (app *application) langToCtx(next http.Handler) http.Handler {
 
 func (app *application) detectLanguage(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		langURL := chi.URLParam(r, "lang")
-		langHeader := r.Header.Get("Accept-Language")
-
-		if langURL != langHeader {
-			redirectURL := strings.Replace(r.URL.Path, "/"+langURL+"/", "/"+langHeader+"/", 1)
-			http.Redirect(w, r, redirectURL, http.StatusSeeOther)
-			return
-		}
-
-		_, ok := app.localizers[langURL]
-		if !ok {
-			app.notFound(w)
-			return
-		}
-
-		ctx := context.WithValue(r.Context(), "lang", langURL)
-		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }
 
