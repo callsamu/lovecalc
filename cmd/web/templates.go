@@ -21,7 +21,8 @@ func toRoundedPercentage(x float64) float64 {
 	return math.Round(10000*x) / 100
 }
 
-func (td *templateData) translate(key string) (string, error) {
+// Translate function
+func (td *templateData) t(key string) (string, error) {
 	return td.Localizer.Localize(&i18n.LocalizeConfig{
 		MessageID:    key,
 		TemplateData: td,
@@ -32,7 +33,7 @@ var functions = template.FuncMap{
 	"toRoundedPercentage": toRoundedPercentage,
 }
 
-func newTemplateCache(dir string, lm *LocaleManager) (map[string]*template.Template, error) {
+func newTemplateCache(dir string) (map[string]*template.Template, error) {
 	templateCache := map[string]*template.Template{}
 
 	pages, err := filepath.Glob(filepath.Join(dir, "*.page.tmpl"))
