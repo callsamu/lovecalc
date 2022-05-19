@@ -14,21 +14,25 @@ import (
 	"github.com/callsamu/lovecalc/pkg/core"
 	"github.com/callsamu/lovecalc/pkg/translations"
 	"github.com/go-redis/redis/v8"
-	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"golang.org/x/text/language"
 )
 
 type contextKey string
 
-var contextKeyLang = contextKey("lang")
+var (
+	contextKeyLang = contextKey("lang")
+	defaultLang    = language.English
+)
 
 type application struct {
 	calculator    core.Calculator
 	infoLog       *log.Logger
 	errorLog      *log.Logger
-	templateCache map[string]*template.Template
 	matchCache    cache.MatchCache
-	localizers    map[string]*i18n.Localizer
+	templateCache map[string]*template.Template
+	localeManager interface {
+		localize(string, *templateData) (string, error)
+	}
 }
 
 func newRedisClient(url string) (*redis.Client, error) {
@@ -60,22 +64,27 @@ func main() {
 		log.Fatal(err)
 		return
 	}
-	matchCache := redisc.NewMatchCache(rdb)
+	mc := redisc.NewMatchCache(rdb)
 
-	bundle, err := translations.Load(translations.LocalesFS, language.English)
+	bundle, err := translations.Load(translations.LocalesFS, defaultLang)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	lm := NewLocaleManager(bundle)
+	tc, err := newTemplateCache("./ui/template/", lm)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	app := application{
+		localeManager: lm,
+		templateCache: tc,
+		matchCache:    mc,
 		calculator:    c,
 		infoLog:       infoLog,
 		errorLog:      errorLog,
-		matchCache:    matchCache,
-		localizers:    newLocalizers(bundle),
-		templateCache: map[string]*template.Template{},
 	}
-	err = app.initTemplateCache("./ui/template")
 	if err != nil {
 		log.Fatal(err)
 	}

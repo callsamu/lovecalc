@@ -36,16 +36,19 @@ func newTestApplication(t *testing.T) *application {
 		t.Fatal(err)
 	}
 
+	lm := NewLocaleManager(bundle)
+	tc, err := newTemplateCache("./../../ui/template/", lm)
+	mc := mock.NewMatchCache()
+
 	app := &application{
 		calculator:    c,
+		localeManager: lm,
+		templateCache: tc,
+		matchCache:    mc,
 		infoLog:       infoLog,
 		errorLog:      errorLog,
-		matchCache:    mock.NewMatchCache(),
-		localizers:    newLocalizers(bundle),
-		templateCache: map[string]*template.Template{},
 	}
 
-	app.initTemplateCache("./../../ui/template/")
 	return app
 }
 

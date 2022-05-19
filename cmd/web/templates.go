@@ -19,32 +19,36 @@ func toRoundedPercentage(x float64) float64 {
 	return math.Round(10000*x) / 100
 }
 
-func (app *application) initTemplateCache(dir string) error {
+var functions = template.FuncMap{
+	"toRoundedPercentage": toRoundedPercentage,
+}
+
+func newTemplateCache(dir string, lm *LocaleManager) (map[string]*template.Template, error) {
+	templateCache := map[string]*template.Template{}
+
 	pages, err := filepath.Glob(filepath.Join(dir, "*.page.tmpl"))
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	functions := template.FuncMap{
-		"t":                   newLocalizerFunc(app.localizers),
-		"toRoundedPercentage": toRoundedPercentage,
-	}
+	funcs := functions
+	funcs["t"] = lm.localize // Set translator function
 
 	for _, page := range pages {
 		name := filepath.Base(page)
 
-		ts, err := template.New(name).Funcs(functions).ParseFiles(page)
+		ts, err := template.New(name).Funcs(funcs).ParseFiles(page)
 		if err != nil {
-			return err
+			return nil, err
 		}
 
 		ts, err = ts.ParseGlob(filepath.Join(dir, "*.layout.tmpl"))
 		if err != nil {
-			return err
+			return nil, err
 		}
 
-		app.templateCache[name] = ts
+		templateCache[name] = ts
 	}
 
-	return nil
+	return templateCache, nil
 }
