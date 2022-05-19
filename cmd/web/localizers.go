@@ -28,17 +28,10 @@ func NewLocaleManager(bundle *i18n.Bundle) *LocaleManager {
 	}
 }
 
-func (lm *LocaleManager) localize(key string, td *templateData) (string, error) {
-	lang := td.Lang
-	local, ok := lm.localizers[lang]
+func (lm *LocaleManager) GetLocalizer(lang string) (*i18n.Localizer, error) {
+	l, ok := lm.localizers[lang]
 	if !ok {
-		return "", fmt.Errorf("locale \"%s\" wasn't found", lang)
+		return nil, fmt.Errorf("unsupported locale %s")
 	}
-
-	message, err := local.Localize(&i18n.LocalizeConfig{
-		MessageID:    key,
-		TemplateData: td,
-	})
-
-	return message, err
+	return l, nil
 }
