@@ -6,10 +6,12 @@ import (
 )
 
 func TestRequire(t *testing.T) {
+	l := newLocalizer(t)
+
 	t.Run("do not supply field", func(t *testing.T) {
 		form := New(url.Values{
 			"foo": []string{""},
-		})
+		}, l)
 
 		form.Required("foo")
 
@@ -21,7 +23,7 @@ func TestRequire(t *testing.T) {
 	t.Run("supply field", func(t *testing.T) {
 		form := New(url.Values{
 			"foo": []string{"foo"},
-		})
+		}, l)
 
 		form.Required("foo")
 
@@ -34,7 +36,7 @@ func TestRequire(t *testing.T) {
 		form := New(url.Values{
 			"foo": []string{"foo"},
 			"bar": []string{""},
-		})
+		}, l)
 
 		form.Required("foo", "bar")
 
@@ -45,10 +47,12 @@ func TestRequire(t *testing.T) {
 }
 
 func TestMaxLength(t *testing.T) {
+	l := newLocalizer(t)
+
 	form := New(url.Values{
 		"foo": []string{"foo"},
 		"bar": []string{"bar"},
-	})
+	}, l)
 
 	form.MaxLength("foo", 3)
 	if !form.Valid() {
@@ -62,6 +66,8 @@ func TestMaxLength(t *testing.T) {
 }
 
 func TestUnicodeLettersOnly(t *testing.T) {
+	l := newLocalizer(t)
+
 	cases := []struct {
 		name  string
 		field string
@@ -79,7 +85,7 @@ func TestUnicodeLettersOnly(t *testing.T) {
 		t.Run(ts.name, func(t *testing.T) {
 			form := New(url.Values{
 				ts.field: []string{ts.input},
-			})
+			}, l)
 
 			form.UnicodeLettersOnly(ts.field)
 			if form.Valid() != ts.valid {

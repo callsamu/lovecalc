@@ -5,6 +5,8 @@ import (
 	"net/url"
 	"unicode"
 	"unicode/utf8"
+
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 )
 
 type Form struct {
@@ -12,10 +14,10 @@ type Form struct {
 	Errors errors
 }
 
-func New(values url.Values) *Form {
+func New(values url.Values, l *i18n.Localizer) *Form {
 	return &Form{
 		Values: values,
-		Errors: errors{},
+		Errors: errors{localizer: l},
 	}
 }
 
@@ -50,5 +52,5 @@ func (f *Form) UnicodeLettersOnly(fields ...string) *Form {
 }
 
 func (f *Form) Valid() bool {
-	return len(f.Errors) == 0
+	return f.Errors.len() == 0
 }
