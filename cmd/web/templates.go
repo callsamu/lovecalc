@@ -22,7 +22,7 @@ func toRoundedPercentage(x float64) float64 {
 }
 
 // Translate function
-func (td *templateData) t(key string) (string, error) {
+func (td *templateData) T(key string) (string, error) {
 	return td.Localizer.Localize(&i18n.LocalizeConfig{
 		MessageID:    key,
 		TemplateData: td,
