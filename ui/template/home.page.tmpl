@@ -2,16 +2,18 @@
 
 {{ define "title" }} Home {{ end }}
 {{ define "body" }}
+<h2> {{ .T "FrontMatter" }} </h2>
+
 <form method="GET" action="/results" class="stacked centralized-container">
     {{ with .Form }}
         <p class="error">{{ .Errors.Get "first" }}</p>
     {{ end }}
-    <input class="text-input text-input-skin" type="name" name="first" placeholder="{{ t "FirstNamePlaceholder" . }}">
+    <input class="text-input text-input-skin" type="name" name="first" placeholder="{{ .T "FirstNamePlaceholder" }}">
     {{ with .Form }}
     <p class="error">{{ .Errors.Get "second" }}</p>
     {{ end }}
-    <input class="text-input text-input-skin" type="name" name="second" placeholder="{{ t "SecondNamePlaceholder" . }}">
-    <input class="button button-skin" type="submit" value="{{ t "SubmitMatchData" . }}">
+    <input class="text-input text-input-skin" type="name" name="second" placeholder="{{ .T "SecondNamePlaceholder" }}">
+    <input class="button button-skin" type="submit" value="{{ .T "SubmitMatchData" }}">
 </form>
 {{ end }}
 
