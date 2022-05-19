@@ -31,7 +31,7 @@ func NewLocaleManager(bundle *i18n.Bundle) *LocaleManager {
 func (lm *LocaleManager) GetLocalizer(lang string) (*i18n.Localizer, error) {
 	l, ok := lm.localizers[lang]
 	if !ok {
-		return nil, fmt.Errorf("unsupported locale %s")
+		return nil, fmt.Errorf("unsupported locale %s", lang)
 	}
 	return l, nil
 }
