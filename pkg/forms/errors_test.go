@@ -1,19 +1,32 @@
 package forms
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/callsamu/lovecalc/pkg/translations"
+	"github.com/nicksnyder/go-i18n/v2/i18n"
+	"golang.org/x/text/language"
+)
 
 func TestErrors(t *testing.T) {
-	e := errors{}
-	e.Add("foo", "foo_error")
+	lang := language.MustParse("en")
+	bundle, err := translations.Load(translations.LocalesFS, lang)
+	if err != nil {
+		t.Fatal(err)
+	}
 
-	want := "foo_error"
+	l := i18n.NewLocalizer(bundle, "en")
+	e := errors{localizer: l}
+	e.Add("foo", "FooError")
+
+	want := "foo"
 	got := e.Get("foo")
 
 	if want != got {
 		t.Errorf("want %s; got %s on error map %v", want, got, e)
 	}
 
-	e.Add("foo", "bar_error")
+	e.Add("foo", "BarError")
 	got = e.Get("foo")
 
 	if want != got {
