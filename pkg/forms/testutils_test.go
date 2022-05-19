@@ -35,3 +35,8 @@ func errMsgBundle(t *testing.T) *i18n.Bundle {
 
 	return bundle
 }
+
+func newLocalizer(t *testing.T) *i18n.Localizer {
+	bundle := errMsgBundle(t)
+	return i18n.NewLocalizer(bundle, "en")
+}
