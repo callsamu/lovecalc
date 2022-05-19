@@ -30,9 +30,7 @@ type application struct {
 	errorLog      *log.Logger
 	matchCache    cache.MatchCache
 	templateCache map[string]*template.Template
-	localeManager interface {
-		localize(string, *templateData) (string, error)
-	}
+	localeManager *LocaleManager
 }
 
 func newRedisClient(url string) (*redis.Client, error) {
