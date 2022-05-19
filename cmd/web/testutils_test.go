@@ -1,7 +1,6 @@
 package main
 
 import (
-	"html/template"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -35,9 +34,13 @@ func newTestApplication(t *testing.T) *application {
 	if err != nil {
 		t.Fatal(err)
 	}
-
 	lm := NewLocaleManager(bundle)
-	tc, err := newTemplateCache("./../../ui/template/", lm)
+
+	tc, err := newTemplateCache("./../../ui/template/")
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	mc := mock.NewMatchCache()
 
 	app := &application{

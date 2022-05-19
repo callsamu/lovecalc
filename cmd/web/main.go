@@ -70,7 +70,7 @@ func main() {
 	}
 
 	lm := NewLocaleManager(bundle)
-	tc, err := newTemplateCache("./ui/template/", lm)
+	tc, err := newTemplateCache("./ui/template/")
 	if err != nil {
 		log.Fatal(err)
 	}
