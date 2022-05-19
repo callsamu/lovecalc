@@ -2,10 +2,15 @@ package forms
 
 import (
 	"testing"
+
+	"github.com/nicksnyder/go-i18n/v2/i18n"
 )
 
 func TestErrors(t *testing.T) {
-	e := errors{localizer: newLocalizer(t)}
+	e := errors{
+		localizer: newLocalizer(t),
+		configs:   map[string][]*i18n.LocalizeConfig{},
+	}
 	e.Add("foo", "FooError")
 
 	want := "foo"

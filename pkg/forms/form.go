@@ -17,7 +17,10 @@ type Form struct {
 func New(values url.Values, l *i18n.Localizer) *Form {
 	return &Form{
 		Values: values,
-		Errors: errors{localizer: l},
+		Errors: errors{
+			localizer: l,
+			configs:   map[string][]*i18n.LocalizeConfig{},
+		},
 	}
 }
 
