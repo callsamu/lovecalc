@@ -14,19 +14,20 @@ type templateData struct {
 	Lang      string
 	Match     *core.Match
 	Form      *forms.Form
-	Localizer *i18n.Localizer
-}
 
-func toRoundedPercentage(x float64) float64 {
-	return math.Round(10000*x) / 100
+	localizer *i18n.Localizer
 }
 
 // Translate function
 func (td *templateData) T(key string) (string, error) {
-	return td.Localizer.Localize(&i18n.LocalizeConfig{
+	return td.localizer.Localize(&i18n.LocalizeConfig{
 		MessageID:    key,
 		TemplateData: td,
 	})
+}
+
+func toRoundedPercentage(x float64) float64 {
+	return math.Round(10000*x) / 100
 }
 
 var functions = template.FuncMap{

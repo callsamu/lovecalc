@@ -24,7 +24,9 @@ func (app *application) notFound(w http.ResponseWriter) {
 }
 
 func (app *application) defaultTemplateData(r *http.Request, td *templateData) {
-	td.Lang = app.lang(r)
+	lang := app.lang(r)
+	td.Lang = lang
+	td.localizer, _ = app.localeManager.GetLocalizer(lang)
 }
 
 func (app *application) render(w http.ResponseWriter, r *http.Request, view string, td *templateData) {
