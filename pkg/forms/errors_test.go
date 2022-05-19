@@ -20,16 +20,22 @@ func TestErrors(t *testing.T) {
 	e.Add("foo", "FooError")
 
 	want := "foo"
-	got := e.Get("foo")
+	got, err := e.Get("foo")
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	if want != got {
-		t.Errorf("want %s; got %s on error map %v", want, got, e)
+		t.Errorf("want %s; got %s on error map", want, got)
 	}
 
 	e.Add("foo", "BarError")
-	got = e.Get("foo")
+	got, err = e.Get("foo")
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	if want != got {
-		t.Errorf("want %s; got %s on error map %v", want, got, e)
+		t.Errorf("want %s; got %s on error map", want, got)
 	}
 }
