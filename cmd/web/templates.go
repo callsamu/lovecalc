@@ -11,19 +11,24 @@ import (
 )
 
 type templateData struct {
-	Lang      string
-	Match     *core.Match
-	Form      *forms.Form
+	Lang  string
+	Match *core.Match
+	Form  *forms.Form
 
 	localizer *i18n.Localizer
 }
 
-// Translate function
+// Translate
 func (td *templateData) T(key string) (string, error) {
 	return td.localizer.Localize(&i18n.LocalizeConfig{
 		MessageID:    key,
 		TemplateData: td,
 	})
+}
+
+// Translate With Configured Call
+func (td *templateData) TC(cfg *i18n.LocalizeConfig) (string, error) {
+	return td.localizer.Localize(cfg)
 }
 
 func toRoundedPercentage(x float64) float64 {
