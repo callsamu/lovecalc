@@ -14,15 +14,17 @@ import (
 const errorMessages = `
 	[FooError]
 	other = "foo"
+	description = ""
 	[BarError]
 	other = "bar"
+	description = ""
 `
 
 func errMsgBundle(t *testing.T) *i18n.Bundle {
 	fs := fstest.MapFS{
 		"mock.en.toml": &fstest.MapFile{
 			Data:    []byte(errorMessages),
-			Mode:    fs.ModeType,
+			Mode:    fs.ModeAppend,
 			ModTime: time.Now(),
 			Sys:     nil,
 		},
