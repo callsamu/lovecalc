@@ -73,19 +73,30 @@ func TestLove(t *testing.T) {
 				return
 			}
 
-			form := forms.New(req.URL.Query())
+			l, err := app.localeManager.GetLocalizer("en")
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			form := forms.New(req.URL.Query(), l)
 			form.Required("first", "second").
 				UnicodeLettersOnly("first", "second").
 				MaxLength("first", 32).
 				MaxLength("second", 32)
 
-			firstErr := []byte(form.Errors.Get("first"))
-			secondErr := []byte(form.Errors.Get("second"))
+			firstErr, err := form.Errors.Get("first")
+			if err != nil {
+				t.Fatal(err)
+			}
+			secondErr, err := form.Errors.Get("second")
+			if err != nil {
+				t.Fatal(err)
+			}
 
-			if !bytes.Contains(body, firstErr) {
+			if !bytes.Contains(body, []byte(firstErr)) {
 				t.Errorf("expected body to contain substring \"%s\"", firstErr)
 			}
-			if !bytes.Contains(body, secondErr) {
+			if !bytes.Contains(body, []byte(secondErr)) {
 				t.Errorf("expected body to contain substring \"%s\"", secondErr)
 			}
 		})

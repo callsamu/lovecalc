@@ -14,7 +14,13 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) love(w http.ResponseWriter, r *http.Request) {
-	form := forms.New(r.URL.Query())
+	lang := app.lang(r)
+	l, err := app.localeManager.GetLocalizer(lang)
+	if err != nil {
+		app.serverError(w, err)
+	}
+
+	form := forms.New(r.URL.Query(), l)
 	form.Required("first", "second").
 		UnicodeLettersOnly("first", "second").
 		MaxLength("first", 32).
