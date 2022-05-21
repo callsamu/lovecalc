@@ -38,7 +38,12 @@ func (app *application) redirectLang(next http.Handler) http.Handler {
 			return
 		}
 
-		url := strings.Replace(r.URL.Path, "/"+lang, "/"+redirectLang, 1)
+		var url string
+		if strings.Contains(r.URL.Path, "/"+lang) {
+			url = strings.Replace(r.URL.Path, "/"+lang, "/"+redirectLang, 1)
+		} else {
+			url = "/" + redirectLang + r.URL.Path
+		}
 
 		http.Redirect(w, r, url, http.StatusSeeOther)
 		return

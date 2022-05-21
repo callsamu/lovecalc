@@ -22,8 +22,16 @@ func TestRedirectLang(t *testing.T) {
 		wantStatus int
 	}{
 		{
-			name:       "simple case",
+			name:       "simple redirect case",
 			url:        "/en/test",
+			lang:       "en",
+			acceptLang: "pt",
+			wantUrl:    "/pt/test",
+			wantStatus: http.StatusSeeOther,
+		},
+		{
+			name:       "no lang in url",
+			url:        "/test",
 			lang:       "en",
 			acceptLang: "pt",
 			wantUrl:    "/pt/test",
@@ -34,12 +42,11 @@ func TestRedirectLang(t *testing.T) {
 	for _, ts := range cases {
 		t.Run(ts.name, func(t *testing.T) {
 			rr := httptest.NewRecorder()
-			req, err := http.NewRequest("GET", "/en/test", nil)
+			req, err := http.NewRequest("GET", ts.url, nil)
 			if err != nil {
 				t.Fatal(err)
 			}
-			lang := extractLang(ts.url)
-			t.Log(lang)
+			req.Header.Set("Accept-Language", ts.acceptLang)
 			app.redirectLang(http.HandlerFunc(next)).ServeHTTP(rr, postLang(req, ts.lang))
 
 			status := rr.Result().StatusCode
