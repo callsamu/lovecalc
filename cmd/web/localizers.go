@@ -18,6 +18,7 @@ type LocaleManager struct {
 func NewLocaleManager(bundle *i18n.Bundle) *LocaleManager {
 	localizers := map[string]*i18n.Localizer{}
 	tags := bundle.LanguageTags()
+	fmt.Println(tags)
 
 	for _, tag := range tags {
 		lang := tag.String()
@@ -34,7 +35,7 @@ func NewLocaleManager(bundle *i18n.Bundle) *LocaleManager {
 func (lm *LocaleManager) GetLocalizer(lang string) (*i18n.Localizer, error) {
 	l, ok := lm.localizers[lang]
 	if !ok {
-		return nil, fmt.Errorf("%w: %s", lang)
+		return nil, fmt.Errorf("%w: %s", errUnsupportedLocale, lang)
 	}
 	return l, nil
 }
