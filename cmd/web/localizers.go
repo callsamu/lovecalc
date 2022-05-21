@@ -1,11 +1,14 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"golang.org/x/text/language"
 )
+
+var errUnsupportedLocale = errors.New("unsupported locale")
 
 type LocaleManager struct {
 	localizers map[string]*i18n.Localizer
@@ -31,7 +34,7 @@ func NewLocaleManager(bundle *i18n.Bundle) *LocaleManager {
 func (lm *LocaleManager) GetLocalizer(lang string) (*i18n.Localizer, error) {
 	l, ok := lm.localizers[lang]
 	if !ok {
-		return nil, fmt.Errorf("unsupported locale %s", lang)
+		return nil, fmt.Errorf("%w: %s", lang)
 	}
 	return l, nil
 }
