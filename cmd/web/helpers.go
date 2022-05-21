@@ -59,7 +59,7 @@ func (app *application) lang(r *http.Request) string {
 
 func (app *application) isLangSupported(lang string) (bool, error) {
 	_, err := app.localeManager.GetLocalizer(lang)
-	if errors.As(err, errUnsupportedLocale) {
+	if errors.Is(err, errUnsupportedLocale) {
 		return false, nil
 	} else if err != nil {
 		return false, err
