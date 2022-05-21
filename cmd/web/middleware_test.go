@@ -19,7 +19,15 @@ func TestRedirectLang(t *testing.T) {
 		acceptLang string
 		wantUrl    string
 		wantStatus int
-	}{}
+	}{
+		{
+			name:       "simple case",
+			url:        "/en/test",
+			acceptLang: "pt",
+			wantUrl:    "/pt/test",
+			wantStatus: http.StatusSeeOther,
+		},
+	}
 
 	for _, ts := range cases {
 		t.Run(ts.name, func(t *testing.T) {
@@ -36,7 +44,13 @@ func TestRedirectLang(t *testing.T) {
 				t.Errorf("want status %d but got %d", ts.wantStatus, status)
 			}
 
-			redirect := rr.Header().Get("Localization")
+			t.Log(rr.Header())
+
+			redirect := rr.Header().Get("Location")
+			if redirect == "" {
+				t.Errorf("redirect URL is empty")
+				return
+			}
 			if redirect != ts.wantUrl {
 				t.Errorf("expected redirect to %s but got %s", ts.wantUrl, redirect)
 			}
