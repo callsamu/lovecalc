@@ -12,7 +12,6 @@ import (
 	"github.com/callsamu/lovecalc/pkg/cache/mock"
 	"github.com/callsamu/lovecalc/pkg/core"
 	"github.com/callsamu/lovecalc/pkg/translations"
-	"golang.org/x/net/context"
 )
 
 type testServer struct {
