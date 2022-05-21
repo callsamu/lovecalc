@@ -38,3 +38,8 @@ func (lm *LocaleManager) GetLocalizer(lang string) (*i18n.Localizer, error) {
 	}
 	return l, nil
 }
+
+func (lm *LocaleManager) Match(lang ...string) language.Tag {
+	match, _ := language.MatchStrings(lm.matcher, lang...)
+	return match
+}
