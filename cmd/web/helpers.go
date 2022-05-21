@@ -45,7 +45,10 @@ func (app *application) render(w http.ResponseWriter, r *http.Request, view stri
 		return
 	}
 
-	buf.WriteTo(w)
+	_, err = buf.WriteTo(w)
+	if err != nil {
+		app.serverError(w, err)
+	}
 }
 
 func (app *application) lang(r *http.Request) string {
