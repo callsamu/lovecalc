@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -11,6 +12,7 @@ import (
 	"github.com/callsamu/lovecalc/pkg/cache/mock"
 	"github.com/callsamu/lovecalc/pkg/core"
 	"github.com/callsamu/lovecalc/pkg/translations"
+	"golang.org/x/net/context"
 )
 
 type testServer struct {
@@ -53,6 +55,11 @@ func newTestApplication(t *testing.T) *application {
 	}
 
 	return app
+}
+
+func postLang(r *http.Request, lang string) *http.Request {
+	ctx := context.WithValue(r.Context(), contextKeyLang, lang)
+	return r.WithContext(ctx)
 }
 
 func newTestServer(t *testing.T, h http.Handler) *testServer {
