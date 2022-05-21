@@ -1,3 +1,16 @@
+[FieldHasInvalidCharsError]
+description = "Validation message for field with invalid characters"
+other = "Field has invalid characters"
+
+[FieldIsRequiredError]
+description = "Validation message for empty field"
+other = "Field is required"
+
+[FieldTooLongError]
+description = "Validation message for field exceeding character limit"
+one = "Field must not contain more than one character"
+other = "Field must not contain more than {count} character"
+
 [FirstNamePlaceholder]
 description = "Placeholder for input box which contains first name of couple"
 other = "First Name"
@@ -17,16 +30,3 @@ other = "Calculate Love"
 [TryNewMatch]
 description = "Button for returning to homepage"
 other = "Try With Other Couple"
-
-[FieldHasInvalidCharsError]
-description = "Validation message for field with invalid characters"
-other = "Field has invalid characters"
-
-[FieldTooLongError]
-description = "Validation message for field exceeding character limit"
-one = "Field must not contain more than one character"
-other = "Field must not contain more than {count} character"
-
-[FieldIsRequiredError]
-description = "Validation message for empty field"
-other = "Field is required"

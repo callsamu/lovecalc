@@ -3,6 +3,11 @@ description = "Placeholder for input box which contains first name of couple"
 hash = "sha1-ac9947d063fc09389b966004ceb64cd87d2fa79f"
 other = "Primer nombre"
 
+[FrontMatter]
+description = "Page front matter"
+hash = "sha1-7a081047c2b3402e82225caa6aacb7ae1cc5fd0d"
+other = "Jo como tacos"
+
 [SecondNamePlaceholder]
 description = "Placeholder for input box which contains first name of couple"
 hash = "sha1-5e35eb3fb7cc6c3300ffcfb0c5f579f27887fed2"
@@ -13,12 +18,23 @@ description = "Submit data for computing match"
 hash = "sha1-07f5838e2e3d5473d8ffd808ec17a6315fa09c27"
 other = "Calcula burrito"
 
-[FrontMatter]
-description = "Page front matter"
-hash = "sha1-7a081047c2b3402e82225caa6aacb7ae1cc5fd0d"
-other = "Jo como tacos"
-
 [TryNewMatch]
 description = "Button for returning to homepage"
 hash = "sha1-7ae35b2dc7018ee2dceafd6fbd2f480dd6e5ecc9"
 other = "Prueba con otra pareja"
+
+[FieldHasInvalidCharsError]
+description = "Validation message for field with invalid characters"
+hash = "sha1-fbafbe6788b50cb1bec6ebd5d3695602b3a88cd8"
+other = "El campo contiene caracteres inválidos"
+
+[FieldIsRequiredError]
+description = "Validation message for empty field"
+hash = "sha1-2654d70aa72a0a83e213fdd140f65b2e1a0fc926"
+other = "Este campo no puede estar vacío"
+
+[FieldTooLongError]
+description = "Validation message for field exceeding character limit"
+hash = "sha1-64e38af01b67f6093976e3e7727bfc63799b6693"
+one = "El campo no puede conter más que un caractere"
+other = "El campo no puede conter más que {count} caracteres"
