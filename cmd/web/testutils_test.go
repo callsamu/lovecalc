@@ -62,15 +62,6 @@ func postLang(r *http.Request, lang string) *http.Request {
 	return r.WithContext(ctx)
 }
 
-func extractLang(url string) string {
-	fields := strings.SplitAfterN(url, "/", 3)
-	if len(fields) == 2 {
-		return ""
-	}
-
-	return fields[0]
-}
-
 func newTestServer(t *testing.T, h http.Handler) *testServer {
 	ts := httptest.NewServer(h)
 	return &testServer{ts}

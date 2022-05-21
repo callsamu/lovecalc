@@ -64,9 +64,7 @@ func TestLove(t *testing.T) {
 			rr := httptest.NewRecorder()
 			url := fmt.Sprintf("/love?first=%s&second=%s", ts.first, ts.second)
 			req, _ := http.NewRequest("GET", url, nil)
-			ctx := context.WithValue(req.Context(), contextKeyLang, "en")
-
-			app.love(rr, req.WithContext(ctx))
+			app.love(rr, postLang(req, "en"))
 			body, err := ioutil.ReadAll(rr.Result().Body)
 			if err != nil {
 				t.Error(err)

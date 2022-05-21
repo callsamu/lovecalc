@@ -1,7 +1,6 @@
 package forms
 
 import (
-	"fmt"
 	"net/url"
 	"unicode"
 	"unicode/utf8"
@@ -27,7 +26,7 @@ func New(values url.Values, l *i18n.Localizer) *Form {
 func (f *Form) Required(fields ...string) *Form {
 	for _, field := range fields {
 		if f.Get(field) == "" {
-			f.Errors.Add(field, "field is required")
+			f.Errors.Add(field, "FieldIsRequiredError")
 		}
 	}
 
@@ -36,7 +35,7 @@ func (f *Form) Required(fields ...string) *Form {
 
 func (f *Form) MaxLength(field string, max int) *Form {
 	if utf8.RuneCountInString(field) > max {
-		f.Errors.Add(field, fmt.Sprintf("field must not be longer than %d characters", max))
+		f.Errors.Addc(field, "FieldTooLongError", max)
 	}
 
 	return f
@@ -44,9 +43,9 @@ func (f *Form) MaxLength(field string, max int) *Form {
 
 func (f *Form) UnicodeLettersOnly(fields ...string) *Form {
 	for _, field := range fields {
-		for _, rune := range []rune(f.Get(field)) {
+		for _, rune := range f.Get(field) {
 			if !(unicode.IsLetter(rune) || unicode.IsSpace(rune)) {
-				f.Errors.Add(field, "field contains invalid characters")
+				f.Errors.Add(field, "FieldHasInvalidCharsError")
 			}
 		}
 	}

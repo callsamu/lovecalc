@@ -12,7 +12,7 @@ func (app *application) routes() http.Handler {
 	r.Use(secureHeaders, app.logRequests, app.recoverPanic)
 
 	r.Route("/{lang:[a-z][a-z]}", func(r chi.Router) {
-		r.Use(app.langToCtx)
+		r.Use(app.langToCtx, app.redirectLang)
 
 		r.Get("/", app.home)
 		r.Get("/love", app.love)

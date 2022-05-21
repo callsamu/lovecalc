@@ -26,11 +26,6 @@ func (td *templateData) T(key string) (string, error) {
 	})
 }
 
-// Translate With Configured Call
-func (td *templateData) TC(cfg *i18n.LocalizeConfig) (string, error) {
-	return td.localizer.Localize(cfg)
-}
-
 func toRoundedPercentage(x float64) float64 {
 	return math.Round(10000*x) / 100
 }

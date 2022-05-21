@@ -18,7 +18,6 @@ type LocaleManager struct {
 func NewLocaleManager(bundle *i18n.Bundle) *LocaleManager {
 	localizers := map[string]*i18n.Localizer{}
 	tags := bundle.LanguageTags()
-	fmt.Println(tags)
 
 	for _, tag := range tags {
 		lang := tag.String()
