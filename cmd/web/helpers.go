@@ -23,14 +23,26 @@ func (app *application) notFound(w http.ResponseWriter) {
 	app.clientError(w, http.StatusNotFound)
 }
 
-func (app *application) defaultTemplateData(r *http.Request, td *templateData) {
+func (app *application) defaultTemplateData(r *http.Request, td *templateData) error {
 	lang := app.lang(r)
 	td.Lang = lang
-	td.localizer, _ = app.localeManager.GetLocalizer(lang)
+
+	l, err := app.localeManager.GetLocalizer(lang)
+	if err != nil {
+		return err
+	}
+
+	td.localizer = l
+	return nil
 }
 
 func (app *application) render(w http.ResponseWriter, r *http.Request, view string, td *templateData) {
-	app.defaultTemplateData(r, td)
+	err := app.defaultTemplateData(r, td)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
 	ts, ok := app.templateCache[view]
 	if !ok {
 		app.serverError(w, fmt.Errorf("The template %s does not exists", view))
@@ -38,7 +50,7 @@ func (app *application) render(w http.ResponseWriter, r *http.Request, view stri
 	}
 
 	buf := new(bytes.Buffer)
-	err := ts.Execute(buf, td)
+	err = ts.Execute(buf, td)
 	if err != nil {
 		app.serverError(w, err)
 		return
