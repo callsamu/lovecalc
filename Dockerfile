@@ -7,7 +7,7 @@ RUN go mod download
 ENV CGO_ENABLED=0
 
 FROM base AS test
-ENTRYPOINT ["go", "test", "-v", "./..."]
+ENTRYPOINT ["go", "test", "-v", "./...", "-coverprofile", "/dev/null"]
 
 FROM base AS build
 RUN --mount=type=cache,target=/root/.cache/go-build \ 

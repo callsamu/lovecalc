@@ -46,7 +46,6 @@ func (app *application) redirectLang(next http.Handler) http.Handler {
 		}
 
 		http.Redirect(w, r, url, http.StatusSeeOther)
-		return
 	})
 }
 
