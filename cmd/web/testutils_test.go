@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/callsamu/lovecalc/pkg/cache/mock"
@@ -59,6 +60,15 @@ func newTestApplication(t *testing.T) *application {
 func postLang(r *http.Request, lang string) *http.Request {
 	ctx := context.WithValue(r.Context(), contextKeyLang, lang)
 	return r.WithContext(ctx)
+}
+
+func extractLang(url string) string {
+	fields := strings.SplitAfterN(url, "/", 1)
+	if len(fields) == 0 {
+		return ""
+	}
+
+	return fields[0]
 }
 
 func newTestServer(t *testing.T, h http.Handler) *testServer {
