@@ -63,8 +63,8 @@ func postLang(r *http.Request, lang string) *http.Request {
 }
 
 func extractLang(url string) string {
-	fields := strings.SplitAfterN(url, "/", 1)
-	if len(fields) == 0 {
+	fields := strings.SplitAfterN(url, "/", 3)
+	if len(fields) == 2 {
 		return ""
 	}
 

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/go-chi/chi/v5"
 )
@@ -25,8 +26,22 @@ func (app *application) langToCtx(next http.Handler) http.Handler {
 	})
 }
 
-func (app *application) detectLanguage(next http.Handler) http.Handler {
+func (app *application) redirectLang(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		lang := app.lang(r)
+		acceptLang := r.Header.Get("Accept-Language")
+		redirectTag, _ := app.localeManager.Match(acceptLang, lang).Base()
+		redirectLang := redirectTag.String()
+
+		if lang == redirectLang {
+			next.ServeHTTP(w, r)
+			return
+		}
+
+		url := strings.Replace(r.URL.Path, "/"+lang, "/"+redirectLang, 1)
+
+		http.Redirect(w, r, url, http.StatusSeeOther)
+		return
 	})
 }
 
