@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -11,7 +10,7 @@ import (
 func TestRedirectLang(t *testing.T) {
 	app := newTestApplication(t)
 	next := func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, []bytes("OK"))
+		fmt.Fprint(w, []byte("OK"))
 	}
 
 	cases := []struct {
@@ -32,12 +31,13 @@ func TestRedirectLang(t *testing.T) {
 			req.Header.Add("Accept-Language", ts.acceptLang)
 			app.redirectLang(http.HandlerFunc(next)).ServeHTTP(rr, req)
 
-			if rr.Result().Status != ts.wantStatus {
-				t.Errorf("want status %d but got %d", ts.wantStatus, rr.Status)
+			status := rr.Result().StatusCode
+			if status != ts.wantStatus {
+				t.Errorf("want status %d but got %d", ts.wantStatus, status)
 			}
 
 			redirect := rr.Header().Get("Localization")
-			if redirect != wantUrl {
+			if redirect != ts.wantUrl {
 				t.Errorf("expected redirect to %s but got %s", ts.wantUrl, redirect)
 			}
 		})
