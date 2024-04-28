@@ -6,7 +6,7 @@ other = "Primer nombre"
 [FrontMatter]
 description = "Page front matter"
 hash = "sha1-7a081047c2b3402e82225caa6aacb7ae1cc5fd0d"
-other = "Jo como tacos"
+other = "La Mejor Calculadora de Amor"
 
 [SecondNamePlaceholder]
 description = "Placeholder for input box which contains first name of couple"
@@ -16,7 +16,7 @@ other = "Segundo nombre"
 [SubmitMatchData]
 description = "Submit data for computing match"
 hash = "sha1-07f5838e2e3d5473d8ffd808ec17a6315fa09c27"
-other = "Calcula burrito"
+other = "Calcula Amor"
 
 [TryNewMatch]
 description = "Button for returning to homepage"

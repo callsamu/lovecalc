@@ -17,7 +17,7 @@ other = "First Name"
 
 [FrontMatter]
 description = "Page front matter"
-other = "To Live is To Suffer"
+other = "The Best Love Calculator"
 
 [SecondNamePlaceholder]
 description = "Placeholder for input box which contains first name of couple"
