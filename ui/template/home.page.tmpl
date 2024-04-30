@@ -4,7 +4,7 @@
 {{ define "body" }}
 <h2> {{ .T "FrontMatter" }} </h2>
 
-<form method="GET" action="/results" class="stacked centralized-container">
+<form method="GET" action="/{{ .Lang }}/love" class="stacked centralized-container">
     {{ with .Form }}
         <p class="error">{{ .Errors.Get "first" }}</p>
     {{ end }}
